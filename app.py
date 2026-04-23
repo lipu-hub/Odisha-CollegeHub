@@ -1,22 +1,39 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import os
 
+# Page Configuration
 st.set_page_config(page_title="Odisha CollegeHub", layout="wide")
 
-# CSS aur HTML ko ek saath load karne ka function
-def load_app():
+def load_full_app():
     try:
-        with open("styles.css", "r", encoding='utf-8') as f:
-            css_code = f.read()
+        # Sari files ko read karna
         with open("index.html", "r", encoding='utf-8') as f:
-            html_code = f.read()
+            html = f.read()
+        with open("styles.css", "r", encoding='utf-8') as f:
+            css = f.read()
+        with open("app.js", "r", encoding='utf-8') as f:
+            js = f.read()
+            
+        # CSS aur JS ko HTML ke andar integrate karna
+        full_code = f"""
+        <style>{css}</style>
+        {html}
+        <script>{js}</script>
+        """
         
-        # HTML ke andar CSS inject karna
-        full_code = f"<style>{css_code}</style>{html_code}"
-        components.html(full_code, height=1000, scrolling=True)
+        # UI Render karna
+        components.html(full_code, height=1200, scrolling=True)
+        
     except Exception as e:
-        st.error(f"Error: Files missing! Make sure index.html and styles.css are in the repo.")
+        st.error(f"⚠️ Error: Kuch files missing hain! {e}")
 
-load_app()
+# Streamlit Sidebar Status
+st.sidebar.title("Vidya AI Counselor")
+if st.secrets.get("CLAUDE_API_KEY"):
+    st.sidebar.success("API Connected ✅")
+else:
+    st.sidebar.warning("API Key Missing in Secrets ⚠️")
 
-st.sidebar.success("Style Loaded! ✅")
+# Run App
+load_full_app()

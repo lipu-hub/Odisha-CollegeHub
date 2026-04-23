@@ -1,32 +1,26 @@
-// Function to show college details in a popup
-function showDetails(id) {
-    const college = colleges.find(c => c.id === id);
-    if (!college) return;
+import streamlit as st
+import streamlit.components.v1 as components
 
-    const modal = document.getElementById("collegeModal");
-    const detailsDiv = document.getElementById("modalDetails");
+st.set_page_config(page_title="Odisha CollegeHub", layout="wide")
 
-    detailsDiv.innerHTML = `
-        <div style="text-align:center;">
-            <img src="${college.image}" style="width:100%; max-height:250px; object-fit:cover; border-radius:10px;">
-            <h2 style="margin-top:15px;">${college.name}</h2>
-            <p>📍 ${college.location} | ⭐ ${college.rating}</p>
-            <hr>
-            <div style="text-align:left; padding:10px;">
-                <p><strong>Fees:</strong> ${college.fees}</p>
-                <p><strong>Average Package:</strong> ${college.avgPackage}</p>
-                <p><strong>Rank:</strong> #${college.rank} in Odisha</p>
-                <p><strong>NIRF Score:</strong> ${college.nirfScore}</p>
-            </div>
-            <button onclick="closeModal()" style="background:#ff4b4b; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; margin-top:10px;">Close</button>
-        </div>
-    `;
-    modal.style.display = "block";
-}
+def load_app():
+    try:
+        # Files ko sirf read karna hai
+        with open("index.html", "r", encoding='utf-8') as f:
+            html = f.read()
+        with open("styles.css", "r", encoding='utf-8') as f:
+            css = f.read()
+        with open("database.js", "r", encoding='utf-8') as f:
+            db = f.read()
+        with open("app.js", "r", encoding='utf-8') as f:
+            js = f.read()
 
-function closeModal() {
-    document.getElementById("collegeModal").style.display = "none";
-}
+        # Bina kisi extra text ke assemble karein
+        full_code = f"<style>{css}</style>{html}<script>{db}</script><script>{js}</script>"
+        
+        components.html(full_code, height=1800, scrolling=True)
+    except Exception as e:
+        st.error(f"Error loading files: {e}")
 
-// Ensure your card rendering uses: 
-// <button onclick="showDetails(${college.id})" class="view-btn">View Details</button>
+if __name__ == "__main__":
+    load_app()

@@ -3,13 +3,20 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Odisha CollegeHub", layout="wide")
 
-# Sabse simple tarika frontend load karne ka
-try:
-    with open("index.html", "r", encoding='utf-8') as f:
-        html_data = f.read()
-        components.html(html_data, height=1000, scrolling=True)
-except Exception as e:
-    st.error(f"Error: index.html nahi mil rahi. Please check file name on GitHub.")
+# CSS aur HTML ko ek saath load karne ka function
+def load_app():
+    try:
+        with open("styles.css", "r", encoding='utf-8') as f:
+            css_code = f.read()
+        with open("index.html", "r", encoding='utf-8') as f:
+            html_code = f.read()
+        
+        # HTML ke andar CSS inject karna
+        full_code = f"<style>{css_code}</style>{html_code}"
+        components.html(full_code, height=1000, scrolling=True)
+    except Exception as e:
+        st.error(f"Error: Files missing! Make sure index.html and styles.css are in the repo.")
 
-st.sidebar.title("Vidya AI Status")
-st.sidebar.success("App is Live! ✅")
+load_app()
+
+st.sidebar.success("Style Loaded! ✅")

@@ -1400,7 +1400,7 @@ const COLLEGES = [
   tags: ['Arts', 'Science'],
   score: 78,
   website: 'https://cuo.ac.in',
-  image: 'https://cuo.ac.in/images/campus.jpg',
+  image: 'https://assets.odishabytes.com/wp-content/uploads/2017/05/CUO.jpg',
   logo: '',
   desc: 'Central University of Odisha offers diverse programs with a national-level curriculum.',
   courses: [

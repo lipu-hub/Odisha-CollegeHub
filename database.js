@@ -1263,7 +1263,7 @@ const COLLEGES = [
   tags: ['B.Tech', 'M.Tech'],
   score: 82,
   website: 'https://cet.edu.in',
-  image: 'https://cet.edu.in/wp-content/uploads/2020/08/campus.jpg',
+  image: 'https://www.gkseries.com/blog/wp-content/uploads/2020/03/College-of-Engineering-and-Technology-Bhubaneswar.jpg',
   logo: '',
   desc: 'CET Bhubaneswar is one of the top government engineering colleges in Odisha with strong academic reputation.',
   courses: [

@@ -1,0 +1,30 @@
+name: Free Auto Fee Updater
+on:
+  schedule:
+    - cron: '0 0 1 1 *' # Har saal 1st Jan ko chalega
+  workflow_dispatch:      # Isse aap manually bhi "Run" kar sakte hain
+
+jobs:
+  update-fees:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run Scraper
+        run: |
+          pip install requests beautifulsoup4
+          python fees_scraper.py
+
+      - name: Save Changes to GitHub
+        run: |
+          git config --global user.name 'Fee-Bot'
+          git config --global user.email 'bot@github.com'
+          git add database.js
+          git commit -m "Automated Fee Update" || echo "No changes to commit"
+          git push

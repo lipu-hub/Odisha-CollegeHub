@@ -1,49 +1,32 @@
-import streamlit as st
-import streamlit.components.v1 as components
-import os
+// Function to show college details in a popup
+function showDetails(id) {
+    const college = colleges.find(c => c.id === id);
+    if (!college) return;
 
-# Page Configuration
-st.set_page_config(page_title="Odisha CollegeHub", layout="wide")
+    const modal = document.getElementById("collegeModal");
+    const detailsDiv = document.getElementById("modalDetails");
 
-def load_full_app():
-    try:
-        # Sari files ko read karna
-        with open("index.html", "r", encoding='utf-8') as f:
-            html_content = f.read()
-        with open("styles.css", "r", encoding='utf-8') as f:
-            css_content = f.read()
-        with open("database.js", "r", encoding='utf-8') as f:
-            db_content = f.read()
-        with open("app.js", "r", encoding='utf-8') as f:
-            js_content = f.read()
+    detailsDiv.innerHTML = `
+        <div style="text-align:center;">
+            <img src="${college.image}" style="width:100%; max-height:250px; object-fit:cover; border-radius:10px;">
+            <h2 style="margin-top:15px;">${college.name}</h2>
+            <p>📍 ${college.location} | ⭐ ${college.rating}</p>
+            <hr>
+            <div style="text-align:left; padding:10px;">
+                <p><strong>Fees:</strong> ${college.fees}</p>
+                <p><strong>Average Package:</strong> ${college.avgPackage}</p>
+                <p><strong>Rank:</strong> #${college.rank} in Odisha</p>
+                <p><strong>NIRF Score:</strong> ${college.nirfScore}</p>
+            </div>
+            <button onclick="closeModal()" style="background:#ff4b4b; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; margin-top:10px;">Close</button>
+        </div>
+    `;
+    modal.style.display = "block";
+}
 
-        # Final Code Assembly
-        # Humne Database ko JS logic se pehle rakha hai taaki data availability error na aaye
-        full_code = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>{css_content}</style>
-        </head>
-        <body>
-            {html_content}
-            <script>
-                // Injecting Database first
-                {db_content}
-                
-                // Injecting App Logic second
-                {js_content}
-            </script>
-        </body>
-        </html>
-        """
-        
-        # Rendering the component
-        components.html(full_code, height=1500, scrolling=True)
+function closeModal() {
+    document.getElementById("collegeModal").style.display = "none";
+}
 
-    except Exception as e:
-        st.error(f"⚠️ File Loading Error: {e}")
-        st.info("Ensure index.html, styles.css, database.js, and app.js are in the same folder as app.py")
-
-if __name__ == "__main__":
-    load_full_app()
+// Ensure your card rendering uses: 
+// <button onclick="showDetails(${college.id})" class="view-btn">View Details</button>

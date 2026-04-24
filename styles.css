@@ -1090,3 +1090,22 @@ footer {
   .ai-panel { width: calc(100vw - 32px); right: 16px; }
   .colleges-layout { padding: 20px; }
 }
+/* Suggestion Dropdown Design */
+.suggestions-list {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 10000;
+    display: none;
+    text-align: left;
+}
+
+.suggestions-list div:hover {
+    background-color: #f1f5f9;
+}

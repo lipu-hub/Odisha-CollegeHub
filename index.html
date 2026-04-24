@@ -108,34 +108,7 @@
   </div>
 </div>
 
-<!-- COLLEGE DETAIL MODAL -->
-<div class="college-detail-modal" id="collegeDetailModal" onclick="if(event.target===this)closeCollegeDetail()">
-  <div class="cdm-box">
-    <div class="cdm-hero">
-      <div class="cdm-hero-img" id="cdmHeroImg"></div>
-      <button class="cdm-close" onclick="closeCollegeDetail()">✕</button>
-      <div class="cdm-header">
-        <div class="cdm-logo" id="cdmLogoEl"></div>
-        <div class="cdm-info">
-          <h2 id="cdmCollegeName"></h2>
-          <p id="cdmCollegeMeta"></p>
-        </div>
-      </div>
-    </div>
-    <div class="cdm-tabs">
-      <button class="cdm-tab active" onclick="switchCDMTab('overview',this)">Overview</button>
-      <button class="cdm-tab" onclick="switchCDMTab('courses',this)">Courses</button>
-      <button class="cdm-tab" onclick="switchCDMTab('placements',this)">Placements</button>
-      <button class="cdm-tab" onclick="switchCDMTab('campus',this)">Campus</button>
-    </div>
-    <div class="cdm-section active" id="cdm-overview"></div>
-    <div class="cdm-section" id="cdm-courses"></div>
-    <div class="cdm-section" id="cdm-placements"></div>
-    <div class="cdm-section" id="cdm-campus"></div>
-    <div class="cdm-footer" id="cdmFooterBtns"></div>
-  </div>
-</div>
-
+<!-- COLLEGE DETAIL MODAL --
 <!-- COMPARE BAR -->
 <input type="text" id="heroSearch" placeholder="Search colleges, courses, universities…" oninput="handleSearchInput(this.value)" onfocus="showSuggestions()" onblur="setTimeout(hideSuggestions,200)"/>
             <option>All Cities</option>

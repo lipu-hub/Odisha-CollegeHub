@@ -137,11 +137,8 @@
 </div>
 
 <!-- COMPARE BAR -->
-<div style="position: relative; width: 100%; max-width: 740px; margin: 0 auto 24px;">
-    <div class="search-wrapper" style="position: relative; flex-direction: column; overflow: visible;">
-    <div style="display: flex; width: 100%; gap: 10px;">
-        <input type="text" id="heroSearch" placeholder="Search colleges, courses, universities…" autocomplete="off">
-        <select id="heroCity">
+<input type="text" id="heroSearch" placeholder="Search colleges, courses, universities…" oninput="handleSearchInput(this.value)" onfocus="showSuggestions()" onblur="setTimeout(hideSuggestions,200)"/>
+<div id="aiSuggestions" class="ai-suggestions"></div>
             <option>All Cities</option>
             <option>Bhubaneswar</option>
             <option>Rourkela</option>

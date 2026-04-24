@@ -137,15 +137,18 @@
 </div>
 
 <!-- COMPARE BAR -->
-<div class="compare-bar" id="compareBar">
-  <div style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap">Compare</div>
-  <div class="compare-bar-items">
-    <div class="compare-slot" id="cslot0">+ Add College</div>
-    <div class="compare-slot" id="cslot1">+ Add College</div>
-    <div class="compare-slot" id="cslot2">+ Add College</div>
-  </div>
-  <button class="btn-do-compare" id="doCompareBtn" disabled onclick="runComparison()">Compare →</button>
-  <button class="compare-bar-close" onclick="clearComparison()">✕</button>
+<div style="position: relative; width: 100%; max-width: 740px; margin: 0 auto 24px;">
+    <div class="search-wrapper" style="display: flex; gap: 10px; width: 100%;">
+        <input type="text" id="heroSearch" placeholder="Search colleges, courses, universities…" autocomplete="off" style="flex: 1;">
+        <select id="heroCity">
+            <option>All Cities</option>
+            <option>Bhubaneswar</option>
+            <option>Rourkela</option>
+            <option>Cuttack</option>
+        </select>
+        <button class="search-btn" onclick="doSearch()">🔍 Search</button>
+    </div>
+    <div id="suggestion-box" class="suggestions-list"></div>
 </div>
 
 <!-- AI COUNSELOR FAB -->

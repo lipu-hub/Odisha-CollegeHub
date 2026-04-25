@@ -700,7 +700,59 @@
     </div>
 </div>
 <!-- SCRIPTS -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="database.js"></script>
+
+<script>
+    // 1. Grid container jahan cards dikhenge (Aapki purani ID use ki hai)
+    const collegeGrid = document.getElementById('homeCollegeGrid');
+
+    // 2. Database se live data khinchna
+    db.collection("colleges").onSnapshot((snapshot) => {
+        collegeGrid.innerHTML = ""; // Purana static kachra saaf
+        
+        snapshot.forEach((doc) => {
+            const college = doc.data();
+            
+            // 3. Multi-course list (Ek hi card mein saare courses)
+            let coursesHTML = "";
+            if(college.courses && college.courses.length > 0) {
+                college.courses.forEach(c => {
+                    coursesHTML += `
+                        <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee;">
+                            <span style="font-weight:bold; color:#002147;">🎓 ${c.name}</span>
+                            <span style="color:#f39c12; font-weight:bold;">${c.fees}</span>
+                        </div>`;
+                });
+            } else {
+                coursesHTML = "<p>Fees: Fetching latest...</p>";
+            }
+
+            // 4. WAHI PURANI STYLE KA CARD (Layout change nahi hoga)
+            const card = document.createElement('div');
+            card.className = 'college-card'; 
+            
+            card.innerHTML = `
+                <div class="college-img" style="height:180px; overflow:hidden;">
+                    <img src="${college.image || 'https://via.placeholder.com/300'}" alt="${college.name}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="college-content" style="padding:15px;">
+                    <h3 style="color:#002147; margin-bottom:5px;">${college.name}</h3>
+                    <p style="font-size:13px; color:#666;"><i class="fas fa-map-marker-alt"></i> ${college.location || 'Odisha'}</p>
+                    
+                    <div style="background:#fdfdfd; padding:10px; border-radius:5px; margin:10px 0;">
+                        ${coursesHTML}
+                    </div>
+
+                    <a href="${college.website}" target="_blank" class="apply-btn" style="display:block; text-align:center; background:#007bff; color:white; padding:10px; border-radius:5px; text-decoration:none; font-weight:bold;">Apply Now</a>
+                </div>
+            `;
+            collegeGrid.appendChild(card);
+        });
+    });
+</script>  
+
 <script src="app.js"></script>
 </body>
 </html>

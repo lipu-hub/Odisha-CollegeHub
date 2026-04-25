@@ -248,13 +248,43 @@ function filterColleges(stream) {
   }, 150);
 }
 
-// ─── HOME RENDERS ────────────────────────────────────────────
-function renderHomeColleges(filter = 'All') {
-  const grid = document.getElementById('homeCollegeGrid');
-  if (!grid) return;
-  const list = filter === 'All' ? COLLEGES.slice(0, 6) :
-    COLLEGES.filter(c => c.type === filter || c.stream === filter).slice(0, 6);
-  grid.innerHTML = list.map(c => collegeCardHTML(c)).join('');
+// ─── FIREBASE LIVE DATA RENDER (Fixed for MBA Search) ─────────
+async function renderCollegePage() {
+    const container = document.getElementById('collegeListEl');
+    if (!container) return;
+    
+    // Loading state dikhao jab tak database connect ho
+    container.innerHTML = "<div style='color:white; padding:20px; text-align:center;'>🔄 Connecting to Odisha Database...</div>";
+
+    try {
+        // Step 1: Firebase collection 'colleges' se saara data lao
+        const querySnapshot = await db.collection("colleges").get();
+        let list = [];
+        querySnapshot.forEach((doc) => {
+            list.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Step 2: Search aur Filter logic (Jo MBA ko detect karega)
+        if (activeStream && activeStream !== 'All') {
+            list = list.filter(c => 
+                (c.stream && c.stream.toLowerCase() === activeStream.toLowerCase()) || 
+                (c.type && c.type.toLowerCase() === activeStream.toLowerCase()) ||
+                (c.name && c.name.toLowerCase().includes(activeStream.toLowerCase()))
+            );
+        }
+
+        // Step 3: UI update karo (Colleges count aur cards)
+        document.getElementById('collegeCount').textContent = list.length;
+        
+        if (list.length === 0) {
+            container.innerHTML = "<p style='color:orange; padding:20px;'>No colleges found. Add data via Admin Panel!</p>";
+        } else {
+            renderCollegeListItems(list);
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        container.innerHTML = "<p style='color:red; padding:20px;'>⚠️ Error loading colleges. Check Firebase Rules.</p>";
+    }
 }
 
 function filterHomeColleges(btn, filter) {

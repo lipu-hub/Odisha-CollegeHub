@@ -1,3 +1,40 @@
+// ==========================================
+// FIREBASE CONNECTION (For Admin & Login)
+// ==========================================
+const firebaseConfig = {
+  apiKey: "AIzaSyDCnbzArMsWbnKtYCDIMPz0BHz8uXJqS9E",
+  authDomain: "odisha-collegehub-480ee.firebaseapp.com",
+  projectId: "odisha-collegehub-480ee",
+  storageBucket: "odisha-collegehub-480ee.firebasestorage.app",
+  messagingSenderId: "71925810932",
+  appId: "1:71925810932:web:9d798974df93982c2580a1",
+  measurementId: "G-3P045ZLE96"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+console.log("Firebase Connected! Purana data niche safe hai. ✅");
+
+// Forgot Password Feature
+function resetUserPassword(email) {
+    return auth.sendPasswordResetEmail(email);
+}
+// ==========================================
+
+
+
+
+
+
+
+
+
+
+
+
 // ═══════════════════════════════════════════════════════
 //  ODISHA COLLEGEHUB — DATABASE
 //  All college, exam, news, scholarship, testimonial data

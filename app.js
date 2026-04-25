@@ -580,49 +580,6 @@ function filterExams(btn, cat) {
   setTimeout(observeCards, 80);
 }
 
-// ─── RANKINGS PAGE ───────────────────────────────────────────
-function renderRankingsPage() {
-  renderRankTable([...COLLEGES].sort((a, b) => a.rank - b.rank));
-}
-
-function renderRankTable(list) {
-  const tbody = document.getElementById('rankTableBody');
-  if (!tbody) return;
-  const colors = ['linear-gradient(135deg,#F59E0B,#D97706)','linear-gradient(135deg,#6B7280,#4B5563)','linear-gradient(135deg,#B45309,#92400E)','linear-gradient(135deg,var(--blue),#1A4FA0)'];
-  tbody.innerHTML = list.map((c, i) => `
-    <tr>
-      <td>
-        <div class="rank-num" style="background:${colors[i] || 'linear-gradient(135deg,var(--gray),#4B5563)'}">#${c.rank}</div>
-      </td>
-      <td>
-        <div class="rank-college-name">${c.name}</div>
-        <div class="rank-college-loc">📍 ${c.loc}</div>
-      </td>
-      <td><span class="ctag">${c.stream}</span></td>
-      <td>
-        <div class="score-bar-wrap">
-          <div class="score-bar"><div class="score-fill" style="width:${c.score}%"></div></div>
-          <div class="score-val">${c.score}/100</div>
-        </div>
-      </td>
-      <td>
-        <span class="stars" style="font-size:13px">★</span>
-        <strong style="font-size:13px"> ${c.rating}</strong>
-        <span style="font-size:11px;color:var(--gray)"> (${c.reviews.toLocaleString()})</span>
-      </td>
-      <td>
-        <button class="btn-exam-detail" onclick="openCollegeDetail(${c.id})" style="padding:8px 16px">View →</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function filterRanks(btn, cat) {
-  document.querySelectorAll('#rankFilter .fbtn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const list = cat === 'All' ? [...COLLEGES] : COLLEGES.filter(c => c.stream === cat || c.type === cat);
-  renderRankTable(list.sort((a, b) => a.rank - b.rank));
-}
 
 // ─── SCHOLARSHIPS PAGE ──────────────────────────────────────
 function renderScholarshipsPage() {

@@ -1,46 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin - Smart Import</title>
+    <title>Admin - College Management</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="database.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        form { max-width: 500px; background: #f4f4f4; padding: 20px; border-radius: 8px; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        .checkbox-group { margin: 15px 0; padding: 10px; background: #fff; border: 1px solid #ddd; }
+        button { background: #28a745; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background: #218838; }
+    </style>
 </head>
 <body>
-    <h2>Add/Update College Course</h2>
+    <h2>Add New College (Detailed Entry)</h2>
     <form id="adminForm">
-        <input type="text" id="name" placeholder="College Name (e.g. IIT BBS)" required><br><br>
-        <input type="text" id="course" placeholder="Course Name (e.g. MBA or B.Tech)" required><br><br>
-        <input type="text" id="location" placeholder="Location"><br><br>
-        <input type="url" id="image" placeholder="Photo URL (First time only)"><br><br>
-        <input type="url" id="website" placeholder="Official Website Link" required><br><br>
-        <button type="submit">Import/Update College</button>
+        <input type="text" id="name" placeholder="College Name (e.g. Dharanidhar University)" required>
+        <input type="text" id="location" placeholder="Location (e.g. Keonjhar, Odisha)" required>
+        
+        <label>Stream:</label>
+        <select id="stream" required>
+            <option value="MBA">MBA</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Medical">Medical</option>
+            <option value="Science">Science</option>
+        </select>
+
+        <label>College Type:</label>
+        <select id="type" required>
+            <option value="government">Government</option>
+            <option value="private">Private</option>
+            <option value="deemed">Deemed</option>
+        </select>
+
+        <div class="checkbox-group">
+            <strong>Facilities:</strong><br>
+            <input type="checkbox" class="facility" value="hostel"> Hostel 🏠<br>
+            <input type="checkbox" class="facility" value="sports"> Sports Facility ⚽<br>
+            <input type="checkbox" class="facility" value="research_lab"> Research Lab 🔬
+        </div>
+
+        <input type="url" id="website" placeholder="Official Website Link" required>
+        <input type="url" id="image" placeholder="Photo URL">
+        
+        <button type="submit">Save College to Database</button>
     </form>
 
     <script>
         document.getElementById('adminForm').onsubmit = async (e) => {
             e.preventDefault();
-            const collegeName = document.getElementById('name').value;
-            const newCourse = {
-                name: document.getElementById('course').value,
-                fees: "Fetching...",
-                status: "Pending"
-            };
+            
+            // Collect selected facilities
+            const selectedFacilities = Array.from(document.querySelectorAll('.facility:checked'))
+                                            .map(cb => cb.value);
 
             const collegeData = {
-                name: collegeName,
+                name: document.getElementById('name').value,
                 location: document.getElementById('location').value,
-                image: document.getElementById('image').value || "https://via.placeholder.com/300",
+                stream: document.getElementById('stream').value,
+                type: document.getElementById('type').value,
+                facilities: selectedFacilities,
                 website: document.getElementById('website').value,
-                courses: firebase.firestore.FieldValue.arrayUnion(newCourse)
+                image: document.getElementById('image').value || "https://via.placeholder.com/300",
+                fees: "Fetching...", // Scraper will update this later
+                status: "active",
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
             };
 
             try {
-                // Merge: true se purana data delete nahi hoga, naya course jud jayega
-                await db.collection("colleges").doc(collegeName).set(collegeData, { merge: true });
-                alert("Success! " + newCourse.name + " added to " + collegeName);
+                // Save with specific ID to avoid duplicates
+                await db.collection("colleges").doc(collegeData.name).set(collegeData);
+                alert("Success! College added with all facilities.");
                 e.target.reset();
-            } catch (err) { alert("Error: " + err.message); }
+            } catch (err) {
+                alert("Error saving data: " + err.message);
+            }
         };
     </script>
 </body>
